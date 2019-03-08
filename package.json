@@ -1,0 +1,19 @@
+{
+  "name": "dnd_tool",
+  "version": "1.0.0",
+  "description": "just a dnd tool we made",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/istoohard/dnd_tool"
+  },
+  "author": "J. Beltz and C. Cookson",
+  "license": "ISC",
+    "dependencies": {
+    "express": "^4.16.4"
+  }
+}

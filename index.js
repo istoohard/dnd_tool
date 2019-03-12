@@ -1,10 +1,11 @@
 // Import the express javascript library
 var express = require('express');
 
+
 const manual = require('./monster-manual');
 
-const scores = require('./scores');
 
+const scores = require('./scores');
 
 
 //decapitalizes given string
@@ -13,6 +14,7 @@ const fixString = function(string){
   return newString;
 };
 
+
 //capitalizes given string
 const fixName = function(string){
   let newName = string.toLowerCase();
@@ -20,6 +22,7 @@ const fixName = function(string){
     newName.substr(1)
   return newName;
 }
+
 
 //checks if given property is equal to value
 const propEquals = function(obj, prop, val){
@@ -53,14 +56,24 @@ const propBetween = function(obj, prop, val1, val2){
 }
 
 
+//checks if given property includes value
+const propIncludes = function(obj, prop, val){
+  if (obj[prop] !== undefined && obj[prop].indexOf(val) > 0) {
+    return true;
+  }
+}
+
+
+
 // Instantiate a server
 var app = express();
+
 
 // Set the port number to be compatible with Cloud 9
 const PORT = 8080;
 
 
-
+//Home
 app.get('/', function (req, res) {
   res.json('Hello world -- My server is working!!!');
   console.log((new Date()).toString()+' Message served to the client');
@@ -87,13 +100,13 @@ app.get('/name/:name', function(req, res) {
 });
 
 
-//CR
-app.get('/CR/:rating', function(req, res) {
+//cr
+app.get('/cr/:rating', function(req, res) {
   let data = manual;
   if (!data) data = null;
   data = data.filter((item, idx) => {
     console.log(idx);
-    eval(item.challenge_rating);
+    item.challenge_rating = eval(item.challenge_rating);
     return propEquals(item, 'challenge_rating', req.params.rating);
   })
   res.json(data);
@@ -101,13 +114,13 @@ app.get('/CR/:rating', function(req, res) {
 })
 
 
-//CR greater than
-app.get('/CR/compare/greater_than/:low_rating', function(req, res) {
+//cr greater than
+app.get('/cr/compare/greater_than/:low_rating', function(req, res) {
   let data = manual;
   if (!data) data = null;
   data = data.filter((item, idx) => {
     console.log(idx);
-    eval(item.challenge_rating)
+    item.challenge_rating = eval(item.challenge_rating);
     return propGreater(item, 'challenge_rating', req.params.low_rating);
     });
   res.json(data);
@@ -115,13 +128,13 @@ app.get('/CR/compare/greater_than/:low_rating', function(req, res) {
 })
 
 
-//CR less than
-app.get('/CR/compare/less_than/:high_rating', function(req, res) {
+//cr less than
+app.get('/cr/compare/less_than/:high_rating', function(req, res) {
   let data = manual;
   if (!data) data = null;
   data = data.filter((item, idx) => {
     console.log(idx);
-    eval(item.challenge_rating)
+    item.challenge_rating = eval(item.challenge_rating);
     return propLower(item, 'challenge_rating', req.params.high_rating);
     });
   res.json(data);
@@ -129,18 +142,57 @@ app.get('/CR/compare/less_than/:high_rating', function(req, res) {
 })
 
 
-//CR range
-// app.get('/CR/compare/range/:low_rating/to/:high_rating', function(req, res) {
-//     let data = manual;
-//     if (!data) data = null;
-//     data = data.filter((item, idx) => {
-//       console.log(idx);
-//       eval(item.challenge_rating);
-//       return propBetween(item, 'challenge_rating', req.params.low_rating, req.params.high_rating);
-//     });
-//   res.json(data);
-//   console.log((new Date()).toString()+' Message served to the client');
-// })
+//cr range
+app.get('/cr/compare/range/:low_rating/to/:high_rating', function(req, res) {
+    let data = manual;
+    if (!data) data = null;
+    data = data.filter((item, idx) => {
+      console.log(idx);
+      item.challenge_rating = eval(item.challenge_rating);
+      return propBetween(item, 'challenge_rating', req.params.low_rating, req.params.high_rating);
+    });
+  res.json(data);
+  console.log((new Date()).toString()+' Message served to the client');
+})
+
+
+//ac
+app.get('/ac/:rating', function(req, res) {
+  let data = manual;
+  if (!data) data = null;
+  data = data.filter((item, idx) => {
+    console.log(idx);
+    return propEquals(item, 'armor_class', req.params.rating);
+  })
+  res.json(data);
+  console.log((new Date()).toString()+' Message served to the client');
+})
+
+
+//ac greater than
+app.get('/ac/compare/greater_than/:low_rating', function(req, res) {
+  let data = manual;
+  if (!data) data = null;
+  data = data.filter((item, idx) => {
+    console.log(idx);
+    return propGreater(item, 'armor_class', req.params.low_rating);
+    });
+  res.json(data);
+  console.log((new Date()).toString()+' Message served to the client');
+})
+
+
+//ac less than
+app.get('/ac/compare/less_than/:high_rating', function(req, res) {
+  let data = manual;
+  if (!data) data = null;
+  data = data.filter((item, idx) => {
+    console.log(idx);
+    return propLower(item, 'armor_class', req.params.high_rating);
+    });
+  res.json(data);
+  console.log((new Date()).toString()+' Message served to the client');
+})
 
 
 // Set up the server to 'listen' to requests on port 8080

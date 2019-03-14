@@ -1,15 +1,57 @@
 // Import the express javascript library
 var express = require('express');
 
+// Transform the data object elements into an
+// HTML table
+const formatToHTML = function(dataArr) {
+  // If dataArr is undefined or null, make an empty array
+  if (!dataArr) {
+    dataArr = [];
+  }
+  // Use the Array.map function to convert each record 
+  // into an HTML table element.
+  dataArr = dataArr.map(item => {
+    // Create the HTML here
+    let html = '<tr>'
+    html += (item.year) ? '<td>'+item.year+'</td>' : '';
+    html += (item.name) ? '<td>'+item.name+'</td>' : '';
+    html += (item.sex) ? '<td>'+item.sex+'</td>' : '';
+    html += (item.count) ? '<td>'+item.count+'</td>' : '';
+    html += '</tr>';
+    return html
+  })
+  // Now join all the elements together inside the 
+  // <table><tbody> elements.
+  return '<table><tbody>'+
+    dataArr.join('')+'</tbody></table>';
+}
+
+
 
 
 const manual = require('./monster-manual');
 const scores = require('./scores');
 
+
+<html>
+<body>
+
+<h1>My First Web Page</h1>
+<p>My First Paragraph</p>
+
+<p id="demo"></p>
+
+<script>
+  const scores = require('./scores');
+document.getElementById("demo").innerHTML = scores['12'];
+</script>
+
+</body>
+</html>
 const mod = function(string){
   for(var i = 1; i==30; i++){
-    if(string ===scores[i]){
-      let modifier = scores.i;
+    if(string ===scores.modifer){
+      let modifier = scores.modifer[string];
       return modifier;
       
     }

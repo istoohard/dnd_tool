@@ -12,9 +12,10 @@ class App extends Component {
 
   constructor(props) {
     super(props);
-    this.click = this.click.bind(this);
+    this.search = this.search.bind(this);
     this.state = {tex: [], cat: [], data:[]};
     this.handleChange = this.handleChange.bind(this);
+    this.click = this.click.bind(this);
   }
 
   handleChange(evt) {
@@ -24,12 +25,16 @@ class App extends Component {
     });
   }
 
+  search(evt) {
+    fetch(api+this.state.cat+this.state.tex)
+    .then(response => response.json())
+    .then(data => {
+      this.setState({ data });
+    });
+  }
+  
   click(evt) {
-        fetch(api+this.state.cat+this.state.tex)
-      .then(response => response.json())
-      .then(data => {
-        this.setState({ data });
-      });
+    document.getElementsByClassName("info").classList.toggle("display");
   }
 
   render() {
@@ -49,7 +54,7 @@ class App extends Component {
               value={this.state.tex}
               onChange={this.handleChange}
             />
-            <button onClick= {this.click}>
+            <button onClick= {this.search}>
               Search
             </button>
           </div>
@@ -69,80 +74,89 @@ class App extends Component {
             </select>
           </div>
           
-          <div classname="sheet">
-            <p>
+          <div>
             {
               this.state.data.map(item  => 
               
-              <div align="left">
-              
-                <h1>{item.name}</h1>
-              
-                <h3>{item.size} {item.type}, {item.alignment}</h3>
+              <div  className="sheet" align="left">
                 
-                <div classname="stats">
-                  <table width = '400'> 
-                    <tr classname="statName" align = "left">
-                      <th>STR</th> 
-                      <th>DEX</th> 
-                      <th>&ensp;CON</th> 
-                      <th>&ensp;INT</th> 
-                      <th>WIS</th> 
-                     <th>CHA</th>
-                   </tr>
-                   <tr classname="statval">
-                     <td>{check.statMod(item.strength)}</td> 
-                     <td>&ensp;{check.statMod(item.dexterity)}</td> 
-                     <td>&ensp;{check.statMod(item.constitution)}</td>
-                     <td>&nbsp;{check.statMod(item.intelligence)}</td>
-                     <td>&ensp;{check.statMod(item.wisdom)}</td>
-                     <td>&ensp;{check.statMod(item.charisma)}</td>
-                   </tr>
-                  </table>
+                <div className="name">
+                  <h1>{item.name}</h1>
                 </div>
               
-                <div classname = "misc">
-                  <h4>Armor Class: {item.armor_class}</h4> 
-                  <h4>Hit Points: {item.hit_points} ({item.hit_dice})</h4>
-                  <h4>Speed: {item.speed}</h4> 
-                </div>
+                <div className="info">
+                  <h3>{item.size} {item.type}, {item.alignment}</h3>
+                
+                  <div className="stats">
+                    <table width = '400'> 
+                      <tr className="statName" align = "left">
+                        <th>STR</th> 
+                        <th>DEX</th> 
+                        <th>&ensp;CON</th> 
+                        <th>&ensp;INT</th> 
+                        <th>WIS</th> 
+                       <th>CHA</th>
+                    </tr>
+                     <tr className="statval">
+                       <td>{check.statMod(item.strength)}</td> 
+                       <td>&ensp;{check.statMod(item.dexterity)}</td> 
+                       <td>&ensp;{check.statMod(item.constitution)}</td>
+                       <td>&nbsp;{check.statMod(item.intelligence)}</td>
+                       <td>&ensp;{check.statMod(item.wisdom)}</td>
+                       <td>&ensp;{check.statMod(item.charisma)}</td>
+                     </tr>
+                    </table>
+                  </div>
               
-                <div classname = "savingThrows">
-                  <h4>Saving Throws:</h4> 
-                  <p>
-                    {check.str(item.strength_save)}
-                    {check.dex(item.dexterity_save)}
-                    {check.con(item.constitution_save)}
-                    {check.int(item.intelligence_save)}
-                    {check.wis(item.wisdom_save)}
-                    {check.cha(item.charisma_save)}
-                  </p>
-                </div>
+                  <div className = "misc">
+                    <h4>Armor Class:</h4>
+                    <p>{item.armor_class}</p>
+                    <h4>Hit Points:</h4>
+                    <p>{item.hit_points} ({item.hit_dice})</p>
+                    <h4>Speed:</h4>
+                    <p>{item.speed}</p>
+                  </div>
               
-                <div classname = "immunities">
-                  <h4>Damage Immunities: {item.damage_immunities}</h4>
-                  <h4>Condition Immunites: {item.conditino_immunities}</h4>
-                </div>
+                  <div className = "savingThrows">
+                    <h4>Saving Throws:</h4> 
+                    <p>
+                      {check.str(item.strength_save)}
+                      {check.dex(item.dexterity_save)}
+                      {check.con(item.constitution_save)}
+                      {check.int(item.intelligence_save)}
+                      {check.wis(item.wisdom_save)}
+                      {check.cha(item.charisma_save)}
+                    </p>
+                  </div>
               
-                <div classname = "passiveAbilities">
-                  <h4>Senses: {item.senses}</h4>
-                  <h4>Languages: {item.languages}</h4>
-                  <h4>Challenge Rating: {item.challenge_rating}</h4>
-                </div>
+                  <div className = "immunities">
+                    <h4>Damage Immunities: </h4>
+                    <p>{item.damage_immunities}</p>
+                    <h4>Condition Immunites:</h4>
+                    <p>{item.conditino_immunities}</p>
+                  </div>
+              
+                  <div className = "passiveAbilities">
+                    <h4>Senses:</h4>
+                    <p>{item.senses}</p>
+                    <h4>Languages:</h4>
+                    <p>{item.languages}</p>
+                    <h4>Challenge Rating:</h4>
+                    <p>{item.challenge_rating}</p>
+                  </div>
                
-                <div classname = "specialAbilities">
-                  <h4>Special Abilities:</h4> 
-                  {check.formatSpecial(item.special_abilities)}
-                </div>
+                  <div className = "specialAbilities">
+                    <h4>Special Abilities:</h4> 
+                    <p>{check.formatSpecial(item.special_abilities)}</p>
+                  </div>
               
-                <div classname = "actions">
-                  <h4>Actions:</h4>
-                  <p>{(check.formatSpecial(item.actions))}</p>
+                  <div className = "actions">
+                    <h4>Actions:</h4>
+                    <p>{(check.formatSpecial(item.actions))}</p>
+                  </div>
                 </div>
-              
               </div> )  
             }
-            </p>
           </div>
         </header>
       </div>

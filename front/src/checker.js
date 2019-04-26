@@ -76,12 +76,9 @@ exports.cha = function(save) {
 };
 
 exports.formatSpecial = function(obj) {
-  var name = [];
+  var name = []
   if (isDefined(obj) === true) {
-    for (var i = 0; i < obj.length; i++) {
-      name[i] = (obj[i].name);
-      name[i] = name[i].concat('\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0');
-    }
+    return obj;
   }
   return name;
 };

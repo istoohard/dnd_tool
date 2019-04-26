@@ -15,7 +15,20 @@ class App extends Component {
     this.search = this.search.bind(this);
     this.state = {tex: [], cat: [], data:[]};
     this.handleChange = this.handleChange.bind(this);
-    this.click = this.click.bind(this);
+  }
+
+  toggleDisplay(evt) {
+    let el = evt.currentTarget;
+    let index = el.getAttribute('id');
+    let item = this.state.data[index];
+    if(item.isCollapsed===true){
+      item.isCollapsed=false;
+      this.setState({ data: this.state.data });
+    }
+    else{
+      item.isCollapsed=true;
+      this.setState({ data: this.state.data });
+    }
   }
 
   handleChange(evt) {
@@ -29,14 +42,16 @@ class App extends Component {
     fetch(api+this.state.cat+this.state.tex)
     .then(response => response.json())
     .then(data => {
+      data = data.map(it => {
+        it.isCollapsed = true;
+        return it;
+      });
+      return data;
+    })
+    .then(data => {
       this.setState({ data });
     });
   }
-  
-  click(evt) {
-    document.getElementsByClassName("info").classList.toggle("display");
-  }
-
   render() {
     return (
       <div className="App">
@@ -74,17 +89,20 @@ class App extends Component {
             </select>
           </div>
           
+          
+          
           <div>
             {
-              this.state.data.map(item  => 
+              this.state.data.map((item, idx)  => 
               
-              <div  className="sheet" align="left">
-                
-                <div className="name">
-                  <h1>{item.name}</h1>
+              <div className="sheet" align="left">
+                {this.toggleDisplay = this.toggleDisplay.bind(this)}
+                <div className="name" align="center">
+                  <h1 id={idx} onClick={this.toggleDisplay} >{item.name}</h1>
                 </div>
-              
-                <div className="info">
+                
+                {(item.isCollapsed)? null:
+                <div  id="info" className="info">
                   <h3>{item.size} {item.type}, {item.alignment}</h3>
                 
                   <div className="stats">
@@ -95,9 +113,9 @@ class App extends Component {
                         <th>&ensp;CON</th> 
                         <th>&ensp;INT</th> 
                         <th>WIS</th> 
-                       <th>CHA</th>
-                    </tr>
-                     <tr className="statval">
+                        <th>CHA</th>
+                      </tr>
+                      <tr className="statVal">
                        <td>{check.statMod(item.strength)}</td> 
                        <td>&ensp;{check.statMod(item.dexterity)}</td> 
                        <td>&ensp;{check.statMod(item.constitution)}</td>
@@ -109,16 +127,16 @@ class App extends Component {
                   </div>
               
                   <div className = "misc">
-                    <h4>Armor Class:</h4>
+                    <h3>Armor Class:</h3>
                     <p>{item.armor_class}</p>
-                    <h4>Hit Points:</h4>
+                    <h3>Hit Points:</h3>
                     <p>{item.hit_points} ({item.hit_dice})</p>
-                    <h4>Speed:</h4>
+                    <h3>Speed:</h3>
                     <p>{item.speed}</p>
                   </div>
               
                   <div className = "savingThrows">
-                    <h4>Saving Throws:</h4> 
+                    <h3>Saving Throws:</h3> 
                     <p>
                       {check.str(item.strength_save)}
                       {check.dex(item.dexterity_save)}
@@ -130,33 +148,49 @@ class App extends Component {
                   </div>
               
                   <div className = "immunities">
-                    <h4>Damage Immunities: </h4>
+                    <h3>Damage Immunities: </h3>
                     <p>{item.damage_immunities}</p>
-                    <h4>Condition Immunites:</h4>
+                    <h3>Condition Immunites:</h3>
                     <p>{item.conditino_immunities}</p>
                   </div>
               
                   <div className = "passiveAbilities">
-                    <h4>Senses:</h4>
+                    <h3>Senses:</h3>
                     <p>{item.senses}</p>
-                    <h4>Languages:</h4>
+                    <h3>Languages:</h3>
                     <p>{item.languages}</p>
-                    <h4>Challenge Rating:</h4>
+                    <h3>Challenge Rating:</h3>
                     <p>{item.challenge_rating}</p>
                   </div>
                
                   <div className = "specialAbilities">
-                    <h4>Special Abilities:</h4> 
-                    <p>{check.formatSpecial(item.special_abilities)}</p>
+                    <h3>Special Abilities:</h3> 
+                    <div>
+                      {(item.special_abilities)?
+                      item.special_abilities.map(item =>
+                        <div>
+                          <h4>{item.name}</h4> 
+                          <p>{item.desc}</p>
+                        </div>
+                        ):null}
+                    </div>  
                   </div>
               
                   <div className = "actions">
-                    <h4>Actions:</h4>
-                    <p>{(check.formatSpecial(item.actions))}</p>
+                    <h3>Actions:</h3>
+                    <div>
+                      {(item.actions)?
+                      item.actions.map(item =>
+                        <div>
+                          <h4>{item.name}</h4> 
+                          <p>{item.desc}</p>
+                        </div>
+                        ):null}
+                    </div>
                   </div>
-                </div>
-              </div> )  
-            }
+                </div>}
+              </div>
+              )}
           </div>
         </header>
       </div>

@@ -76,7 +76,7 @@ exports.cha = function(save) {
 };
 
 exports.formatSpecial = function(obj) {
-  var name = []
+  var name = [];
   if (isDefined(obj) === true) {
     return obj;
   }
@@ -85,9 +85,21 @@ exports.formatSpecial = function(obj) {
 
 exports.statMod = function(stat) {
   let data = scores;
-  data = data.filter((item) => {
+   data = data.filter((item) => {
     return propEquals(item, "stat", stat);
   });
   let mod = data[0].modifier;
   return stat + '(' + mod + ')';
+  // if (isDefined(stat) === true) {
+  // data = data.filter((item) => {
+  //   return propEquals(item, "stat", stat);
+  // });
+  // let mod = data[0].modifier;
+  // return stat + '(' + mod + ')';
+  // }
 };
+
+// const divStyle = {
+//   color: 'blue',
+//   cursor: 'pointer' ,
+// };

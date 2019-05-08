@@ -34,9 +34,12 @@
 
 /* Add a black background color to the top navigation */
 .topnav {
+  position: fixed;
+  top: 0;
   background-color: #333;
   overflow: hidden;
-  width: 100%
+  width: 100%;
+  z-index:1;
 }
 
 /* Style the links inside the navigation bar */
@@ -75,4 +78,98 @@
 /* Hide the link that should open and close the topnav on small screens */
 .topnav .icon {
   display: none;
+}
+
+.custom-select {
+  background-color:#333;
+  color: #ffffff;
+  font: Verdana;
+  padding: 4px 4px;
+  border: 1px solid #333;
+  border-color: transparent transparent rgba(0, 0, 0, 0.1) transparent;
+}
+
+.text {
+  height: 22px;
+  background-color: white;
+}
+
+.input_container {
+
+  display: flex;
+  width: 25%;
+
+}
+
+/* Style the input fields */
+.input_field {
+  width: 100%;
+  outline: none;
+}
+
+.search_filters {
+  float: left;
+}
+
+.sheet {
+  position:relative;
+  top:75px;
+}
+
+.info {
+  margin:70px;
+}
+
+.type {
+  border-bottom:2px solid white;
+  border-collapse:collapse;
+}
+
+.stats {
+  border-bottom:2px solid white;
+  border-collapse:collapse;
+  text-align:center;
+}
+
+.misc {
+  border-bottom:2px solid white;
+  border-collapse:collapse;
+}
+
+.passive_abilities {
+  border-bottom:2px solid white;
+  border-collapse:collapse;
+}
+
+.immunities {
+  border-bottom:2px solid white;
+  border-collapse:collapse;
+}
+
+.saving_throws {
+  border-bottom:2px solid white;
+  border-collapse:collapse;
+}
+
+.special_abilities {
+  border-bottom:2px solid white;
+  border-collapse:collapse;
+}
+
+.actions {
+  border-bottom:2px solid white;
+  border-collapse:collapse;
+}
+
+.description {
+  border-bottom:2px solid white;
+  border-collapse:collapse;
+}
+
+#more {
+  background:none;
+  border:none;
+  color:#FFF;
+  font-family:Verdana, Geneva, sans-serif;
+  cursor:pointer;
 }
